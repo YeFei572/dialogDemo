@@ -3,9 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomerDialog extends StatefulWidget {
-  final String text;
-
-  CustomerDialog({Key key, @required this.text}) : super(key: key);
 
   @override
   _CustomerDialogState createState() => _CustomerDialogState();
@@ -13,7 +10,7 @@ class CustomerDialog extends StatefulWidget {
 
 class _CustomerDialogState extends State<CustomerDialog> {
   bool beEdit = false;
-  List<String> cuntries = <String>[
+  List<String> countries = <String>[
     '北京',
     '上海',
     '成都',
@@ -119,7 +116,7 @@ class _CustomerDialogState extends State<CustomerDialog> {
                 ),
                 Expanded(
                   child: MyDialogContent(
-                    cuntries: cuntries,
+                    cuntries: countries,
                     beEdit: this.beEdit,
                   ),
                 ),
@@ -172,7 +169,7 @@ class _CustomerDialogState extends State<CustomerDialog> {
                   Navigator.of(context).pop();
                   print("你输入的名称是：$_name");
                   setState(() {
-                    cuntries.add(_name);
+                    countries.add(_name);
                   });
 
                   /// 下面开始写接口 blabla....
