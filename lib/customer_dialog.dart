@@ -1,8 +1,9 @@
+import 'package:dialog01/my_dialog_content.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomerDialog extends StatefulWidget {
-  String text;
+  final String text;
 
   CustomerDialog({Key key, @required this.text}) : super(key: key);
 
@@ -11,6 +12,16 @@ class CustomerDialog extends StatefulWidget {
 }
 
 class _CustomerDialogState extends State<CustomerDialog> {
+  bool beEdit = false;
+  List<String> cuntries = <String>[
+    '北京',
+    '上海',
+    '成都',
+    '西安',
+    '太原',
+    '云南',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return new Material(
@@ -52,22 +63,42 @@ class _CustomerDialogState extends State<CustomerDialog> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
+                          beEdit
+                              ? Container()
+                              : Container(
+                                  margin: EdgeInsets.only(right: 20),
+                                  child: InkWell(
+                                    child: Icon(CupertinoIcons.pen),
+                                    onTap: () {
+                                      print('eidt');
+                                      setState(() {
+                                        this.beEdit = true;
+                                      });
+                                      print(this.beEdit);
+                                    },
+                                  ),
+                                ),
                           Container(
-                            margin: EdgeInsets.only(right: 20),
-                            child: InkWell(
-                              child: Icon(CupertinoIcons.pen),
-                              onTap: () {
-                                print('eidt');
-                              },
-                            ),
-                          ),
-                          Container(
-                            child: InkWell(
-                              child: Icon(CupertinoIcons.add_circled),
-                              onTap: () {
-                                print('添加');
-                              },
-                            ),
+                            child: beEdit
+                                ? InkWell(
+                                    child: Text(
+                                      '完成',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    onTap: () {
+                                      setState(() {
+                                        this.beEdit = false;
+                                      });
+                                      print('完成');
+                                    },
+                                  )
+                                : InkWell(
+                                    child: Icon(CupertinoIcons.add_circled),
+                                    onTap: () {
+                                      print('添加');
+                                      _addInputDialog(context);
+                                    },
+                                  ),
                           ),
                         ],
                       ),
@@ -87,43 +118,71 @@ class _CustomerDialogState extends State<CustomerDialog> {
                   ),
                 ),
                 Expanded(
-                  child: ListView(
-                    children: <Widget>[
-                      ListTile(
-                        title: Text('123'),
-                      ),
-                      ListTile(
-                        title: Text('123'),
-                      ),
-                      ListTile(
-                        title: Text('123'),
-                      ),
-                      ListTile(
-                        title: Text('123'),
-                      ),
-                      ListTile(
-                        title: Text('123'),
-                      ),
-                      ListTile(
-                        title: Text('123'),
-                      ),
-                      ListTile(
-                        title: Text('123'),
-                      ),
-                      ListTile(
-                        title: Text('123'),
-                      ),
-                      ListTile(
-                        title: Text('123'),
-                      ),
-                    ],
+                  child: MyDialogContent(
+                    cuntries: cuntries,
+                    beEdit: this.beEdit,
                   ),
-                )
+                ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  void _addInputDialog(BuildContext _context) {
+    String _name = "";
+    showDialog<String>(
+      context: _context,
+      barrierDismissible: false,
+      builder: (BuildContext __context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Text('输入要修改的名称'),
+          content: new Row(
+            children: <Widget>[
+              new Expanded(
+                  child: new TextField(
+                autofocus: true,
+                decoration:
+                    new InputDecoration(labelText: '名称', hintText: '输入要修改的名称'),
+                onChanged: (value) {
+                  /// 当input里值有变动的时候，就会触发这个方法
+                  _name = value;
+                },
+              ))
+            ],
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('取消'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('确定'),
+              onPressed: () {
+                if (_name == "") {
+                  print('名称不能为空字符串!');
+                } else {
+                  Navigator.of(context).pop();
+                  print("你输入的名称是：$_name");
+                  setState(() {
+                    cuntries.add(_name);
+                  });
+
+                  /// 下面开始写接口 blabla....
+
+                }
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
