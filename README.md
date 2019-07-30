@@ -1,9 +1,3 @@
-# dialog01
-
-A new Flutter project.
-
-## Getting Started
-
 ### 文件说明 
 - customer_dialog.dart 对话框的主框架(外层框架)
 - my_dialog_content.dart 对话框的内容列表
