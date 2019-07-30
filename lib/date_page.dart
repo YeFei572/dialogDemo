@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
+import 'utils/date_format_util.dart';
+
 class DatePage extends StatefulWidget {
   @override
   _DatePageState createState() => _DatePageState();
@@ -19,16 +21,22 @@ class _DatePageState extends State<DatePage> {
             Container(
               child: RaisedButton(
                 onPressed: () {
-                  DatePicker.showDatePicker(context,
-                      showTitleActions: true,
-                      minTime: DateTime(2019, 7, 30),
-                      maxTime: DateTime(2020, 5, 5), onChanged: (date) {
-                    print('confir $date');
-                  }, onConfirm: (date) {
-                    setState(() {
-                      this.resultDate = date;
-                    });
-                  }, currentTime: DateTime.now(), locale: LocaleType.zh);
+                  DatePicker.showDatePicker(
+                    context,
+                    showTitleActions: true,
+                    minTime: DateTime(2018, 5, 30),
+                    maxTime: DateTime(2020, 5, 5),
+                    onChanged: (date) {
+                      print('confir $date');
+                    },
+                    onConfirm: (date) {
+                      setState(() {
+                        this.resultDate = date;
+                      });
+                    },
+                    currentTime: DateTime.now(),
+                    locale: LocaleType.zh,
+                  );
                 },
                 child: Text('获取日期'),
               ),
@@ -43,8 +51,15 @@ class _DatePageState extends State<DatePage> {
             Container(
               margin: EdgeInsets.only(top: 30),
               child: Text(
-                resultDate.toString(),
+                DateFormatUtil.formatDate(resultDate),
                 style: TextStyle(fontSize: 25),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 30),
+              child: Text(
+                DateFormatUtil.formatDays(resultDate),
+                style: TextStyle(fontSize: 30),
               ),
             )
           ],
